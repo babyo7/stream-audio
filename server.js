@@ -22,7 +22,6 @@ app.get("/", async (req, res) => {
         res.status(404).end()
       })
         url.on("end", () => {
-        console.log("Stream ended");
         res.end();
       });
       url.pipe(res);
