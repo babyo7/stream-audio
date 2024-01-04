@@ -24,6 +24,7 @@ app.get("/", async (req, res) => {
       res.setHeader("Content-Length", duration * bytesPerMinute);
       url.on("error", (error) => {
         res.status(500).send("Error during audio streaming");
+        return
       });
       url.pipe(res);
     } else {
