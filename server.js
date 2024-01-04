@@ -23,17 +23,14 @@ app.get("/", async (req, res) => {
       res.setHeader("content-type", "audio/mpeg");
       res.setHeader("Content-Length", duration * bytesPerMinute);
       url.on("error", (error) => {
-        res.send("error")
-        res.end();
+        res.status(500).send("Error during audio streaming");
       });
       url.pipe(res);
     } else {
-      res.send("error")
-      res.end()
+   res.status(500).json("message":"url not provided);
     }
   } catch (error) {
-    res.send("error")
-    res.end()
+   res.status(500).json("Error":error.message);
   }
 });
 
