@@ -25,8 +25,6 @@ app.get("/", async (req, res) => {
       res.setHeader("Content-Length", calculateContentLength(duration));
 
       url.on("error", (error) => {
-        console.log(error);
-        url.destroy();
         res.end();
       });
 
