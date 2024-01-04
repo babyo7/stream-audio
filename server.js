@@ -23,7 +23,8 @@ app.get("/", async (req, res) => {
       res.setHeader("content-type", "audio/mpeg");
       res.setHeader("Content-Length", duration * bytesPerMinute);
       url.on("error", (error) => {
-        res.status(404).end();
+        res.send("error")
+        res.end();
       });
       url.pipe(res);
     } else {
