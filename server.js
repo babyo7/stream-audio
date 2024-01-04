@@ -16,6 +16,8 @@ app.get("/", async (req, res) => {
 
     const info = await StreamAudio.getInfo(link);
 
+    const length = info.formats[0].contentLength;
+
     const url = StreamAudio(link, {
       filter: "videoandaudio",
       quality: "highestvideo",
@@ -23,7 +25,7 @@ app.get("/", async (req, res) => {
 
     res.setHeader("content-type", "audio/mpeg");
     res.setHeader("Accept-Ranges", "bytes");
-    res.setHeader("Content-Length", calculateContentLength(info));
+    res.setHeader("Content-Length", length);
 
     url.on("error", (error) => {
       console.log(error);
@@ -36,12 +38,6 @@ app.get("/", async (req, res) => {
     res.status(500).json({ Error: error.message });
   }
 });
-
-function calculateContentLength(info) {
-  const bitrate = 128;
-  const contentLength = (info.formats[0].contentLength / 8) * 1000; // in bytes
-  return Math.floor(contentLength).toString();
-}
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
