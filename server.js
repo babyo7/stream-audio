@@ -26,6 +26,10 @@ app.get("/", async (req, res) => {
         res.end()
         return
       });
+      url.on("end", () => {
+        res.end()
+        return
+      })
       url.pipe(res);
     } else {
    res.status(500).json({"message":"url not provided"});
