@@ -37,6 +37,7 @@ app.get("/", async (req, res) => {
     }
   } catch (error) {
    res.status(500).json({"Error":error.message});
+    res.end()
   }
 });
 
