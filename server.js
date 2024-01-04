@@ -27,10 +27,10 @@ app.get("/", async (req, res) => {
       });
       url.pipe(res);
     } else {
-      res.json({ message: "url not provided" });
+      res.status(404).json({ message: "url not provided" });
     }
   } catch (error) {
-    res.json({ error: error.message });
+    res.status(404).json({ error: error.message });
   }
 });
 
