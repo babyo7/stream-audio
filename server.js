@@ -28,9 +28,11 @@ app.get("/", async (req, res) => {
       url.pipe(res);
     } else {
       res.status(404).json({ message: "url not provided" });
+      res.end()
     }
   } catch (error) {
     res.status(404).json({ error: error.message });
+    res.end()
   }
 });
 
