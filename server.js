@@ -13,30 +13,33 @@ app.get("/", async (req, res) => {
     if (!link) {
       return res.status(500).json({ message: "url not provided" });
     }
-      const info = await StreamAudio.getInfo(link);
-      const duration = parseInt(info.videoDetails.lengthSeconds);
 
-      const url = StreamAudio(link, {
-        filter: "videoandaudio",
-        quality: "highestvideo",
-      });
-      res.setHeader("content-type", "audio/mpeg");
-      res.setHeader("Accept-Ranges", "bytes");
-      res.setHeader("Content-Length", calculateContentLength(duration));
+    const info = await StreamAudio.getInfo(link);
 
-      url.on("error", (error) => {
-        res.end();
-      });
+    const url = StreamAudio(link, {
+      filter: "videoandaudio",
+      quality: "highestvideo",
+    });
 
-      url.pipe(res);
+    res.setHeader("content-type", "audio/mpeg");
+    res.setHeader("Accept-Ranges", "bytes");
+    res.setHeader("Content-Length", calculateContentLength(info));
+
+    url.on("error", (error) => {
+      console.log(error);
+      url.destroy();
+      res.end();
+    });
+
+    url.pipe(res);
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }
 });
 
-function calculateContentLength(duration) {
+function calculateContentLength(info) {
   const bitrate = 128;
-  const contentLength = (duration * bitrate * 1000) / 8;
+  const contentLength = (info.formats[0].contentLength / 8) * 1000; // in bytes
   return Math.floor(contentLength).toString();
 }
 
