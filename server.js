@@ -10,35 +10,37 @@ app.use(express.static("./"));
 app.get("/", async (req, res) => {
   try {
     const link = req.query.url;
-    if (link) {
+    if (!link) {
+      return res.status(500).json({ message: "url not provided" });
+    }
       const info = await StreamAudio.getInfo(link);
-      const duration = info.videoDetails.lengthSeconds;
+      const duration = parseInt(info.videoDetails.lengthSeconds);
+
       const url = StreamAudio(link, {
         filter: "videoandaudio",
         quality: "highestvideo",
       });
-      const bitrate = 128;
-      const bytesPerMinute = ((bitrate * 1000) / 8) * 60;
-
       res.setHeader("content-type", "audio/mpeg");
-      res.setHeader("Content-Length", duration * bytesPerMinute);
-       res.setHeader("Accept-Ranges", "bytes");
+      res.setHeader("Accept-Ranges", "bytes");
+      res.setHeader("Content-Length", calculateContentLength(duration));
+
       url.on("error", (error) => {
-        res.end()
-        return
+        console.log(error);
+        url.destroy();
+        res.end();
       });
-      url.on("end", () => {
-        res.end()
-        return
-      })
+
       url.pipe(res);
-    } else {
-   res.status(500).json({"message":"url not provided"});
-    }
   } catch (error) {
-   res.status(500).json({"Error":error.message});
+    res.status(500).json({ Error: error.message });
   }
 });
+
+function calculateContentLength(duration) {
+  const bitrate = 128;
+  const contentLength = (duration * bitrate * 1000) / 8;
+  return Math.floor(contentLength).toString();
+}
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
