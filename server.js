@@ -22,6 +22,7 @@ app.get("/", async (req, res) => {
 
       res.setHeader("content-type", "audio/mpeg");
       res.setHeader("Content-Length", duration * bytesPerMinute);
+       res.setHeader("Accept-Ranges", "bytes");
       url.on("error", (error) => {
         res.end()
         return
