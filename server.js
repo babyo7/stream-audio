@@ -11,17 +11,19 @@ app.get("/", async (req, res) => {
   try {
     const link = req.query.url;
     if (link) {
-      const id = StreamAudio.getVideoID(link);
+      const info = await StreamAudio.getInfo(link);
+      const duration = info.videoDetails.lengthSeconds;
       const url = StreamAudio(link, {
         filter: "videoandaudio",
         quality: "highestvideo",
       });
+      const bitrate = 128;
+      const bytesPerMinute = ((bitrate * 1000) / 8) * 60;
+
       res.setHeader("content-type", "audio/mpeg");
-      url.on("error",(error)=>{
-        res.status(404).end()
-      })
-        url.on("end", () => {
-        res.end();
+      res.setHeader("Content-Length", duration * bytesPerMinute);
+      url.on("error", (error) => {
+        res.status(404).end();
       });
       url.pipe(res);
     } else {
