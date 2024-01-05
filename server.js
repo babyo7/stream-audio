@@ -39,6 +39,19 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get("/d", async (req, res) => {
+ 
+    const link = req.query.url;
+ 
+      const url=   StreamAudio(link).pipe(fs.createWriteStream("music/gta.mp3"))
+ 
+      url.on("finish",()=>{
+        res.send("ok")
+      })
+    
+
+}) 
+
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
