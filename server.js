@@ -29,6 +29,7 @@ app.get("/", async (req, res) => {
 
     url.on("error", (error) => {
       console.log("Error Sending Stream");
+      url.destroy()
       res.end();
     });
 
