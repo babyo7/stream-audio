@@ -28,8 +28,7 @@ app.get("/", async (req, res) => {
     res.setHeader("Content-Length", length);
 
     url.on("error", (error) => {
-      console.log(error);
-      url.destroy();
+      console.log("Error Sending Stream");
       res.end();
     });
 
