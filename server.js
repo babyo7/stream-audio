@@ -3,6 +3,7 @@ const StreamAudio = require("ytdl-core");
 const app = express();
 const port = process.env.PORT || 4000;
 const cors = require("cors");
+const fs = require('fs')
 
 app.use(cors());
 app.use(express.static("./"));
@@ -15,19 +16,18 @@ app.get("/", async (req, res) => {
     }
 
     const info = await StreamAudio.getInfo(link);
-    
-    const length = (info.formats[0].approxDurationMs)/1000
 
-    console.log(length);
+    const length = info.formats[0].approxDurationMs;
 
     const url = StreamAudio(link, {
       filter: "videoandaudio",
       quality: "highestvideo",
     });
 
-    res.setHeader("content-type", "video/mp4");
+    res.setHeader("content-type", "audio/mpeg");
+    res.setHeader("Accept-Ranges", "bytes");
     res.setHeader("Content-Length", length);
- 
+
     url.on("error", (error) => {
       console.log(error);
       url.destroy();
@@ -42,8 +42,10 @@ app.get("/", async (req, res) => {
 
 
 
+
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
 
 module.exports = app;
+
