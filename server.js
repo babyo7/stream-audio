@@ -26,12 +26,10 @@ app.get("/", async (req, res) => {
 
     res.setHeader("content-type", "audio/mpeg");
     res.setHeader("Accept-Ranges", "bytes");
-    res.setHeader("Content-Length", length);
-
+  
     url.on("error", (error) => {
       console.log(error);
-      url.destroy();
-      res.end();
+    
     });
 
     url.pipe(res);
@@ -48,3 +46,4 @@ app.listen(port, () => {
 });
 
 module.exports = app;
+
