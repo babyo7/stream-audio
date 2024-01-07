@@ -17,7 +17,7 @@ app.get("/", async (req, res) => {
 
     const info = await StreamAudio.getInfo(link);
 
-    const length = info.formats[0].approxDurationMs;
+    const length = info.formats[0].contentLength;
 
     const url = StreamAudio(link, {
       filter: "videoandaudio",
@@ -48,4 +48,3 @@ app.listen(port, () => {
 });
 
 module.exports = app;
-
