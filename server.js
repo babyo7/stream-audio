@@ -28,19 +28,15 @@ app.get("/", async (req, res) => {
     res.setHeader("Content-Type", "audio/mpeg");
     res.setHeader("Accept-Ranges", "bytes");
     res.setHeader("Content-Length", length);
-    res.setHeader("Content-Range", `bytes 0-${length - 1}/${length}`);
     res.status(200);
 
     const stream = ytdl(link, {
       quality: "highestvideo",
       filter: "videoandaudio",
-      highWaterMark: 1 << 25, 
     });
 
     stream.on("error", (error) => {
       console.error(error);
-      res.status(404)
-      stream.destroy()
       res.end();
       return
     });
