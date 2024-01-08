@@ -12,10 +12,16 @@ app.get("/", async (req, res) => {
   const Link = req.query.url;
   if (Link) {
     try {
-      const id = StreamAudio.getVideoID(`https://www.youtube.com/watch?v=${Link}`)
+      const id = StreamAudio.getVideoID(
+        `https://www.youtube.com/watch?v=${Link}`
+      );
       console.log(Link);
       if (fs.existsSync(`music/${Link}.mp3`)) {
-        res.send(`/music/${Link}.mp3`)
+        const audio = fs.createReadStream(`music/${Link}.mp3`);
+        const data = fs.statSync(`music/${Link}.mp3`);
+        res.setHeader("content-type", "audio/mpeg");
+        res.setHeader("content-length", data.size);
+        audio.pipe(res);
         return;
       }
 
@@ -25,11 +31,14 @@ app.get("/", async (req, res) => {
       }).pipe(fs.createWriteStream(`music/${Link}.mp3`));
 
       Download.on("finish", () => {
-       res.send(`/music/${Link}.mp3`)
+        const audio = fs.createReadStream(`music/${Link}.mp3`);
+        const data = fs.statSync(`music/${Link}.mp3`);
+        res.setHeader("content-type", "audio/mpeg");
+        res.setHeader("content-length", data.size);
+        audio.pipe(res);
       });
-
     } catch (error) {
-      res.json(error.message)
+      res.json(error.message);
     }
   } else {
     res.status(404).json("url not provided");
