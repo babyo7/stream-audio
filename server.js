@@ -15,7 +15,7 @@ app.get("/", async (req, res) => {
       const id = StreamAudio.getVideoID(
         `https://www.youtube.com/watch?v=${Link}`
       );
-      console.log(Link);
+  
       if (fs.existsSync(`music/${Link}.mp3`)) {
         const audio = fs.createReadStream(`music/${Link}.mp3`);
         const data = fs.statSync(`music/${Link}.mp3`);
@@ -31,11 +31,13 @@ app.get("/", async (req, res) => {
       }).pipe(fs.createWriteStream(`music/${Link}.mp3`));
 
       Download.on("finish", () => {
+            console.log(Link);
         const audio = fs.createReadStream(`music/${Link}.mp3`);
         const data = fs.statSync(`music/${Link}.mp3`);
         res.setHeader("content-type", "audio/mpeg");
         res.setHeader("content-length", data.size);
         audio.pipe(res);
+        
       });
     } catch (error) {
       res.json(error.message);
