@@ -18,7 +18,7 @@ app.get("/", async (req, res) => {
     const SongId = StreamAudio.getVideoID(Link);
 
     if (fs.existsSync(`music/${SongId}.mp3`)) {
-      const Data = fs.statSync(`music/${Id}.mp3`);
+      const Data = fs.statSync(`music/${SongId}.mp3`);
       if(Data.size == 0){
         Download(Link,res)
       }
