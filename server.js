@@ -16,29 +16,20 @@ app.get("/", async (req, res) => {
       return;
     }
     const SongId = StreamAudio.getVideoID(Link);
+    const filePath = `music/${SongId}.mp3`;
 
-    if (fs.existsSync(`music/${SongId}.mp3`)) {
+    if (fs.existsSync(filePath)) {
       SendStream(res, SongId);
-      
-    }else{
-      const Download = StreamAudio(Link, {
+    } else {
+      const download = StreamAudio(Link, {
         filter: "videoandaudio",
         quality: "highestvideo",
-      }).pipe(fs.createWriteStream(`music/${SongId}.mp3`));
-      Download.on("end", () => {
-        const Data = fs.statSync(`music/${SongId}.mp3`);
-    const file = fs.createReadStream(`music/${SongId}.mp3`);
-  
-    res.setHeader("content-type", "audio/mpeg");
-    res.setHeader("content-length", Data.size);
-  
-    
-    console.log("streaming 1");
-    
-    file.pipe(res);
-    
+      }).pipe(fs.createWriteStream(filePath));
+
+      download.on("finish", () => {
+        SendStream(res, SongId);
       });
-      }
+    }
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }
@@ -46,22 +37,29 @@ app.get("/", async (req, res) => {
 
 function SendStream(res, Id) {
   try {
-    const Data = fs.statSync(`music/${Id}.mp3`);
-    const file = fs.createReadStream(`music/${Id}.mp3`);
-  
-    res.setHeader("content-type", "audio/mpeg");
-    res.setHeader("content-length", Data.size);
-  
-    
-    console.log("streaming");
-    
+    const filePath = `music/${Id}.mp3`;
+    const data = fs.statSync(filePath);
+    const file = fs.createReadStream(filePath);
+
+    res.setHeader("Content-Type", "audio/mpeg");
+    res.setHeader("Content-Length", data.size);
+
+    console.log("Streaming");
+
     file.pipe(res);
-    
-    
+
+    file.on("end", () => {
+      console.log("Streaming complete.");
+    });
+
+    file.on("error", (error) => {
+      console.error("Error streaming file:", error);
+      res.status(500).end();
+    });
   } catch (error) {
-    console.log(error);
+    console.error("Error:", error);
+    res.status(500).end();
   }
- 
 }
 
 app.listen(port, () => {
