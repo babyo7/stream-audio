@@ -36,12 +36,7 @@ app.get("/", async (req, res) => {
       const audio = Download.pipe(fs.createWriteStream(`music/${Link}.mp3`));
 
       audio.on("finish", () => {
-        const Data = fs.statSync(`music/${Link}.mp3`);
-        const audio = fs.createReadStream(`music/${Link}.mp3`);
-        res.setHeader("content-type", "audio/mp3");
-        res.setHeader("content-length", Data.size);
-        console.log("piped");
-        audio.pipe(res);
+      res.send('sex')
       });
     } catch (error) {}
   } else {
