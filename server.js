@@ -19,8 +19,8 @@ app.get("/", async (req, res) => {
 
     if (fs.existsSync(`music/${SongId}.mp3`)) {
       SendStream(res, SongId);
-      return
-    } 
+      
+    }else{
       const Download = StreamAudio(Link, {
         filter: "videoandaudio",
         quality: "highestvideo",
@@ -28,7 +28,7 @@ app.get("/", async (req, res) => {
       Download.on("finish", () => {
         SendStream(res, SongId);
       });
-      
+      }
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }
@@ -42,18 +42,12 @@ function SendStream(res, Id) {
     res.setHeader("content-type", "audio/mpeg");
     res.setHeader("content-length", Data.size);
      res.setHeader("Accept-Ranges", "bytes");
-    res.setHeader("Content-Disposition", `attachment; filename="${Id}.mp3"`);
     res.setHeader("Cache-Control", "public, max-age=3600");
     res.setHeader("Connection", "keep-alive");
     
     console.log("streaming");
     
     file.pipe(res);
-    
-    file.on('end', () => {
-      console.log("Streaming complete.");
-      res.end();
-    });
     
     
   } catch (error) {
