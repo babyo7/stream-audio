@@ -26,7 +26,17 @@ app.get("/", async (req, res) => {
         quality: "highestvideo",
       }).pipe(fs.createWriteStream(`music/${SongId}.mp3`));
       Download.on("finish", () => {
-        SendStream(res, SongId);
+        const Data = fs.statSync(`music/${Id}.mp3`);
+    const file = fs.createReadStream(`music/${Id}.mp3`);
+  
+    res.setHeader("content-type", "audio/mpeg");
+    res.setHeader("content-length", Data.size);
+  
+    
+    console.log("streaming");
+    
+    file.pipe(res);
+    
       });
       }
   } catch (error) {
@@ -41,9 +51,7 @@ function SendStream(res, Id) {
   
     res.setHeader("content-type", "audio/mpeg");
     res.setHeader("content-length", Data.size);
-     res.setHeader("Accept-Ranges", "bytes");
-    res.setHeader("Cache-Control", "public, max-age=3600");
-    res.setHeader("Connection", "keep-alive");
+  
     
     console.log("streaming");
     
