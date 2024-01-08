@@ -20,13 +20,7 @@ app.get("/", async (req, res) => {
     if (fs.existsSync(`music/${SongId}.mp3`)) {
       SendStream(res, SongId);
     } else {
-      const Download = StreamAudio(Link, {
-        filter: "videoandaudio",
-        quality: "highestvideo",
-      }).pipe(fs.createWriteStream(`music/${SongId}.mp3`));
-      Download.on("finish", () => {
-        console.log(`music/${SongId}.mp3`)
-      });
+    Download(Link)
     }
   } catch (error) {
     res.status(500).json({ Error: error.message });
@@ -49,6 +43,17 @@ function SendStream(res, Id) {
     console.log(error);
   }
  
+}
+
+function Download(Link){
+  const SongId = StreamAudio.getVideoID(Link);
+  let Download = StreamAudio(Link, {
+    filter: "videoandaudio",
+    quality: "highestvideo",
+  }).pipe(fs.createWriteStream(`music/${SongId}.mp3`));
+  Download.on("finish", () => {
+    console.log(`music/${SongId}.mp3`)
+  });
 }
 
 app.listen(port, () => {
