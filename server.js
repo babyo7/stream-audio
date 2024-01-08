@@ -16,17 +16,15 @@ app.get("/", async (req, res) => {
       return;
     }
     const SongId = StreamAudio.getVideoID(Link);
-    const filePath = `music/${SongId}.mp3`;
 
-    if (fs.existsSync(filePath)) {
+    if (fs.existsSync(`music/${SongId}.mp4`)) {
       SendStream(res, SongId);
     } else {
-      const download = StreamAudio(Link, {
+      const Download = StreamAudio(Link, {
         filter: "videoandaudio",
         quality: "highestvideo",
-      }).pipe(fs.createWriteStream(filePath));
-
-      download.on("finish", () => {
+      }).pipe(fs.createWriteStream(`music/${SongId}.mp4`));
+      Download.on("finish", () => {
         SendStream(res, SongId);
       });
     }
@@ -37,29 +35,20 @@ app.get("/", async (req, res) => {
 
 function SendStream(res, Id) {
   try {
-    const filePath = `music/${Id}.mp3`;
-    const data = fs.statSync(filePath);
-    const file = fs.createReadStream(filePath);
-
-    res.setHeader("Content-Type", "audio/mpeg");
-    res.setHeader("Content-Length", data.size);
-
-    console.log("Streaming");
-
+    const Data = fs.statSync(`music/${Id}.mp4`);
+    const file = fs.createReadStream(`music/${Id}.mp4`);
+  
+    res.setHeader("content-type", "audio/mp3");
+    res.setHeader("content-length", Data.size);
+     
+    console.log("streaming");
+     
     file.pipe(res);
-
-    file.on("end", () => {
-      console.log("Streaming complete.");
-    });
-
-    file.on("error", (error) => {
-      console.error("Error streaming file:", error);
-      res.status(500).end();
-    });
+    
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).end();
+    console.log(error);
   }
+ 
 }
 
 app.listen(port, () => {
