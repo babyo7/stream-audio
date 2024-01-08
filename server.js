@@ -13,13 +13,21 @@ app.get("/", async (req, res) => {
   if (Link) {
     try {
       const id = StreamAudio.getVideoID(`https://www.youtube.com/watch?v=${Link}`)
+      console.log(Link);
+      if (fs.existsSync(`music/${Link}.mp3`)) {
+        res.send(`/music/${Link}.mp3`)
+        return;
+      }
 
       const Download = StreamAudio(Link, {
         filter: "videoandaudio",
         quality: "highestvideo",
-      }).pipe(res)
+      }).pipe(fs.createWriteStream(`music/${Link}.mp3`));
 
-      
+      Download.on("finish", () => {
+       res.send(`/music/${Link}.mp3`)
+      });
+
     } catch (error) {
       res.json(error.message)
     }
