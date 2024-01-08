@@ -25,7 +25,7 @@ app.get("/", async (req, res) => {
         quality: "highestvideo",
       }).pipe(fs.createWriteStream(`music/${SongId}.mp3`));
       Download.on("finish", () => {
-        console.log("music/${SongId}.mp3")
+        console.log(`music/${SongId}.mp3`)
       });
     }
   } catch (error) {
