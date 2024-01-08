@@ -33,7 +33,7 @@ app.get("/", async (req, res) => {
     res.setHeader("content-length", Data.size);
   
     
-    console.log("streaming");
+    console.log("streaming 1");
     
     file.pipe(res);
     
