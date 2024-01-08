@@ -40,10 +40,20 @@ function SendStream(res, Id) {
   
     res.setHeader("content-type", "audio/mpeg");
     res.setHeader("content-length", Data.size);
-     
+     res.setHeader("Accept-Ranges", "bytes");
+    res.setHeader("Content-Disposition", `attachment; filename="${Id}.mp3"`);
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    res.setHeader("Connection", "keep-alive");
+    
     console.log("streaming");
-     
+    
     file.pipe(res);
+    
+    file.on('end', () => {
+      console.log("Streaming complete.");
+      res.end();
+    });
+    
     
   } catch (error) {
     console.log(error);
