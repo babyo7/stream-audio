@@ -13,7 +13,7 @@ app.get("/", async (req, res) => {
   if (Link) {
     try {
       console.log(Link);
-      if (fs.existsSync(`music/${Link}.mp3`)) {
+      if (fs.existsSync(`music/${Link}.mp3`) > 0 ) {
         const Data = fs.statSync(`music/${Link}.mp3`);
         const audio = fs.createReadStream(`music/${Link}.mp3`);
         res.setHeader("content-type", "audio/mp3");
