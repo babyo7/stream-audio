@@ -25,7 +25,7 @@ app.get("/", async (req, res) => {
         filter: "videoandaudio",
         quality: "highestvideo",
       }).pipe(fs.createWriteStream(`music/${SongId}.mp3`));
-      Download.on("finish", () => {
+      Download.on("end", () => {
         const Data = fs.statSync(`music/${Id}.mp3`);
     const file = fs.createReadStream(`music/${Id}.mp3`);
   
