@@ -19,7 +19,8 @@ app.get("/", async (req, res) => {
 
     if (fs.existsSync(`music/${SongId}.mp3`)) {
       SendStream(res, SongId);
-    } else {
+      return
+    } 
       const Download = StreamAudio(Link, {
         filter: "videoandaudio",
         quality: "highestvideo",
@@ -27,7 +28,7 @@ app.get("/", async (req, res) => {
       Download.on("finish", () => {
         SendStream(res, SongId);
       });
-    }
+      
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }
