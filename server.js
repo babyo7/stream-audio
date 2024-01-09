@@ -3,7 +3,6 @@ const StreamAudio = require("ytdl-core");
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require("cors");
-const fs = require("fs");
 
 app.use(cors());
 app.use(express.static("./"));
