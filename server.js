@@ -21,6 +21,7 @@ app.get("/", async (req, res) => {
         const data = fs.statSync(`music/${Link}.mp3`);
         res.setHeader("content-type", "audio/mpeg");
         res.setHeader("content-length", data.size);
+        res.setHeader("Accept-Ranges", "bytes");
         audio.pipe(res);
         return;
       }
@@ -36,6 +37,7 @@ app.get("/", async (req, res) => {
         const data = fs.statSync(`music/${Link}.mp3`);
         res.setHeader("content-type", "audio/mpeg");
         res.setHeader("content-length", data.size);
+        res.setHeader("Accept-Ranges", "bytes");
         audio.pipe(res);
         
       });
