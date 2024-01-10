@@ -21,6 +21,10 @@ app.get("/", async (req, res) => {
       res.setHeader("content-length", contentLength);
 
       res.setHeader("content-type", "audio/mpeg");
+      res.setHeader("Cache-Control", "public, max-age=3600"); 
+      res.setHeader("Accept-Ranges", "bytes");
+
+      
       const Download = StreamAudio(Link, {
         filter: "videoandaudio",
         quality: "highestvideo",
