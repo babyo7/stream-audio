@@ -21,7 +21,7 @@ app.get("/", async (req, res) => {
       res.setHeader("content-length", contentLength);
 
       res.setHeader("content-type", "audio/mpeg");
-      res.setHeader("Cache-Control", "public, max-age=3600"); 
+      //res.setHeader("Cache-Control", "public, max-age=3600"); 
       res.setHeader("Accept-Ranges", "bytes");
 
       
@@ -30,6 +30,7 @@ app.get("/", async (req, res) => {
         quality: "highestvideo",
       }).pipe(res);
     } catch (error) {
+      console.log(error);
       res.json(error.message);
     }
   } else {
