@@ -46,7 +46,7 @@ app.get("/", async (req, res) => {
       res.json(error.message);
     }
   } else {
-    res.status(404).json("url not provided");
+    res.status(200).json("url not provided");
   }
 });
 
