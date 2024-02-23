@@ -109,8 +109,8 @@ if (cluster.isPrimary) {
           audio.pipe(res);
         });
       } catch (error) {
-        console.log(error.message);
-        res.json(error.message);
+        console.log(error);
+       res.status(500).json("internal error");
       }
     } else {
       res.status(200).json("url not provided");
