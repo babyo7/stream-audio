@@ -80,16 +80,14 @@ if (cluster.isPrimary) {
     const Link = req.query.url;
     if (Link) {
       try {
-        const id = StreamAudio.getVideoID(
-          `https://www.youtube.com/watch?v=${Link}`
-        );
+        
 
         if (fs.existsSync(`music/${Link}.mp3`)) {
           const audio = fs.createReadStream(`music/${Link}.mp3`);
           const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("content-length", data.size);
-          res.setHeader("Accept-Ranges", "bytes");
+          
           audio.pipe(res);
           return;
         }
@@ -105,7 +103,7 @@ if (cluster.isPrimary) {
           const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("content-length", data.size);
-          res.setHeader("Accept-Ranges", "bytes");
+          
           audio.pipe(res);
         });
       } catch (error) {
