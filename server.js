@@ -211,7 +211,6 @@ if (cluster.isPrimary) {
 
   app.get("/", async (req, res) => {
     const Link = req.query.url;
-    const file = req.query.file;
     if (Link) {
       try {
         if (fs.existsSync(`music/${Link}.mp3`)) {
