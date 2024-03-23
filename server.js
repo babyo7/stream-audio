@@ -190,7 +190,6 @@
 // }
 
 
-
 const express = require("express");
 const StreamAudio = require("ytdl-core");
 const app = express();
@@ -217,6 +216,8 @@ if (cluster.isPrimary) {
           const audio = fs.createReadStream(`music/${Link}.mp3`);
           const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
+          res.setHeader("Accept-Ranges", "bytes");
+
           res.setHeader("content-length", data.size);
           audio.pipe(res);
           return;
@@ -233,6 +234,7 @@ if (cluster.isPrimary) {
           const audio = fs.createReadStream(`music/${Link}.mp3`);
           const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
+          res.setHeader("Accept-Ranges", "bytes");
           res.setHeader("content-length", data.size);
           audio.pipe(res);
         });
@@ -254,6 +256,7 @@ if (cluster.isPrimary) {
           const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("content-length", data.size);
+          res.setHeader("Accept-Ranges", "bytes");
           res.setHeader(
             "Content-Disposition",
             `attachment; filename=${file}.mp3`
@@ -274,6 +277,7 @@ if (cluster.isPrimary) {
           const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("content-length", data.size);
+          res.setHeader("Accept-Ranges", "bytes");
           res.setHeader(
             "Content-Disposition",
             `attachment; filename=${file}.mp3`
@@ -293,6 +297,3 @@ if (cluster.isPrimary) {
     console.log(`http://localhost:${port}`);
   });
 }
-
-
-
