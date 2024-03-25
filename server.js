@@ -348,13 +348,15 @@ if (cluster.isPrimary) {
 
           const outputFilePath = `music/${Link}converted.mp3`;
 
-          const ffmpegProcess = cp.spawnSync(ffmpeg, [
+         const ffmpegProcess = cp.spawnSync(ffmpeg, [
             "-i",
-            inputFilePath, // Input file
+            inputFilePath, // Input audio file
             "-c:a",
             "libmp3lame", // Output audio codec (MP3)
-            "-q:a",
-            "0",
+            "-b:a",
+            "320k", // Set the bitrate to 320 kbps (adjust as needed)
+            "-ar",
+            "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
@@ -416,14 +418,15 @@ if (cluster.isPrimary) {
 
           const outputFilePath = `music/${Link}converted.mp3`;
 
-          const ffmpegProcess = cp.spawnSync(ffmpeg, [
+        const ffmpegProcess = cp.spawnSync(ffmpeg, [
             "-i",
-            inputFilePath, // Input file
+            inputFilePath, // Input audio file
             "-c:a",
             "libmp3lame", // Output audio codec (MP3)
-            "-q:a",
-            "0",
-
+            "-b:a",
+            "320k", // Set the bitrate to 320 kbps (adjust as needed)
+            "-ar",
+            "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
