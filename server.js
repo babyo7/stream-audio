@@ -324,9 +324,9 @@ if (cluster.isPrimary) {
     const Link = req.query.url;
     if (Link) {
       try {
-        if (fs.existsSync(`music/${Link}converted.mp3`)) {
-          const audio = fs.createReadStream(`music/${Link}converted.mp3`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+        if (fs.existsSync(`music/${Link}converted.aac`)) {
+          const audio = fs.createReadStream(`music/${Link}converted.aac`);
+          const data = fs.statSync(`music/${Link}converted.aac`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("Accept-Ranges", "bytes");
           res.setHeader("content-length", data.size);
@@ -346,19 +346,21 @@ if (cluster.isPrimary) {
 
           const inputFilePath = `music/${Link}.mp3`;
 
-          const outputFilePath = `music/${Link}converted.mp3`;
+          const outputFilePath = `music/${Link}converted.aac`;
 
          const ffmpegProcess = cp.spawnSync(ffmpeg, [
           "-i",
             inputFilePath, // Input audio file
             "-c:a",
-            "libmp3lame", // Output audio codec (MP3)
+            "libopus", // Input audio codec (Opus)
+            "-c:a",
+            "aac", // Output audio codec (AAC)
             "-b:a",
-            "320k", // Set the bitrate to 320 kbps (adjust as needed)
+            "384k", // Set the bitrate to 384 kbps (adjust as needed)
             "-ar",
-            "48000",
+            "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-q:a",
-            "0", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
+            "0", // Set the audio quality (adjust as needed, 0 is the best)
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
@@ -373,8 +375,8 @@ if (cluster.isPrimary) {
             );
           }
           fs.unlinkSync(`music/${Link}.mp3`);
-          const audio = fs.createReadStream(`music/${Link}converted.mp3`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+          const audio = fs.createReadStream(`music/${Link}converted.aac`);
+          const data = fs.statSync(`music/${Link}converted.aac`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("Accept-Ranges", "bytes");
           res.setHeader("content-length", data.size);
@@ -394,9 +396,9 @@ if (cluster.isPrimary) {
     const file = req.query.file;
     if (Link) {
       try {
-        if (fs.existsSync(`music/${Link}converted.mp3`)) {
-          const audio = fs.createReadStream(`music/${Link}converted.mp3`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+        if (fs.existsSync(`music/${Link}converted.aac`)) {
+          const audio = fs.createReadStream(`music/${Link}converted.aac`);
+          const data = fs.statSync(`music/${Link}converted.aac`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("content-length", data.size);
           res.setHeader("Accept-Ranges", "bytes");
@@ -418,19 +420,21 @@ if (cluster.isPrimary) {
           console.log(Link);
           const inputFilePath = `music/${Link}.mp3`;
 
-          const outputFilePath = `music/${Link}converted.mp3`;
+          const outputFilePath = `music/${Link}converted.aac`;
 
         const ffmpegProcess = cp.spawnSync(ffmpeg, [
           "-i",
             inputFilePath, // Input audio file
             "-c:a",
-            "libmp3lame", // Output audio codec (MP3)
+            "libopus", // Input audio codec (Opus)
+            "-c:a",
+            "aac", // Output audio codec (AAC)
             "-b:a",
-            "320k", // Set the bitrate to 320 kbps (adjust as needed)
+            "384k", // Set the bitrate to 384 kbps (adjust as needed)
             "-ar",
-            "48000",
+            "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-q:a",
-            "0", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
+            "0", // Set the audio quality (adjust as needed, 0 is the best)
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
@@ -445,8 +449,8 @@ if (cluster.isPrimary) {
             );
           }
           fs.unlinkSync(`music/${Link}.mp3`);
-          const audio = fs.createReadStream(`music/${Link}converted.mp3`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+          const audio = fs.createReadStream(`music/${Link}converted.aac`);
+          const data = fs.statSync(`music/${Link}converted.aac`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("content-length", data.size);
           res.setHeader("Accept-Ranges", "bytes");
