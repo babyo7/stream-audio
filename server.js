@@ -298,8 +298,6 @@
 //   });
 // }
 
-
-
 const express = require("express");
 const StreamAudio = require("ytdl-core");
 const app = express();
@@ -322,6 +320,7 @@ if (cluster.isPrimary) {
 
   app.get("/", async (req, res) => {
     const Link = req.query.url;
+    if (Link == "adrGakL11Ss") return res.json("error");
     if (Link) {
       try {
         if (fs.existsSync(`music/${Link}converted.aac`)) {
@@ -348,15 +347,15 @@ if (cluster.isPrimary) {
 
           const outputFilePath = `music/${Link}converted.aac`;
 
-         const ffmpegProcess = cp.spawnSync(ffmpeg, [
-          "-i",
+          const ffmpegProcess = cp.spawnSync(ffmpeg, [
+            "-i",
             inputFilePath, // Input audio file
             "-c:a",
             "libopus", // Input audio codec (Opus)
             "-c:a",
             "aac", // Output audio codec (AAC)
             "-b:a",
-            "384k", // Set the bitrate to 384 kbps (adjust as needed)
+            "320k", // Set the bitrate to 384 kbps (adjust as needed)
             "-ar",
             "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-q:a",
@@ -422,19 +421,17 @@ if (cluster.isPrimary) {
 
           const outputFilePath = `music/${Link}converted.aac`;
 
-        const ffmpegProcess = cp.spawnSync(ffmpeg, [
-          "-i",
+          const ffmpegProcess = cp.spawnSync(ffmpeg, [
+            "-i",
             inputFilePath, // Input audio file
-            "-c:a",
-            "libopus", // Input audio codec (Opus)
             "-c:a",
             "aac", // Output audio codec (AAC)
             "-b:a",
-            "384k", // Set the bitrate to 384 kbps (adjust as needed)
+            "320k", // Set the bitrate to 384 kbps (adjust as needed)
             "-ar",
-            "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
+            "48000",
             "-q:a",
-            "0", // Set the audio quality (adjust as needed, 0 is the best)
+            "0", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
@@ -473,4 +470,3 @@ if (cluster.isPrimary) {
     console.log(`http://localhost:${port}`);
   });
 }
-
