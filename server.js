@@ -325,7 +325,7 @@ if (cluster.isPrimary) {
       try {
         if (fs.existsSync(`music/${Link}converted.aac`)) {
           const audio = fs.createReadStream(`music/${Link}converted.aac`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+          const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("Accept-Ranges", "bytes");
           res.setHeader("content-length", data.size);
@@ -373,7 +373,7 @@ if (cluster.isPrimary) {
           }
       
           const audio = fs.createReadStream(`music/${Link}converted.aac`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+          const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("Accept-Ranges", "bytes");
           res.setHeader("content-length", data.size);
@@ -395,7 +395,7 @@ if (cluster.isPrimary) {
       try {
         if (fs.existsSync(`music/${Link}converted.aac`)) {
           const audio = fs.createReadStream(`music/${Link}converted.aac`);
-          const data = fs.statSync(`music/${Link}converted.aac`);
+          const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("content-length", data.size);
           res.setHeader("Accept-Ranges", "bytes");
@@ -443,9 +443,9 @@ if (cluster.isPrimary) {
               ffmpegProcess.stderr.toString()
             );
           }
-          fs.unlinkSync(`music/${Link}.mp3`);
+        
           const audio = fs.createReadStream(`music/${Link}converted.aac`);
-          const data = fs.statSync(`music/${Link}converted.aac`);
+          const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("content-length", data.size);
           res.setHeader("Accept-Ranges", "bytes");
