@@ -350,8 +350,8 @@ if (cluster.isPrimary) {
           const ffmpegProcess = cp.spawnSync(ffmpeg, [
             "-i",
             inputFilePath, // Input audio file
-            "-c:a",
-            "libopus", // Input audio codec (Opus)
+            "-i",
+            inputFilePath, // Input audio file
             "-c:a",
             "aac", // Output audio codec (AAC)
             "-b:a",
@@ -429,9 +429,9 @@ if (cluster.isPrimary) {
             "-b:a",
             "320k", // Set the bitrate to 384 kbps (adjust as needed)
             "-ar",
-            "48000",
+            "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-q:a",
-            "0", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
+            "0", // Set the audio quality (adjust as needed, 0 is the best)
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
