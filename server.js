@@ -355,7 +355,7 @@ if (cluster.isPrimary) {
             "-b:a",
             "320k", // Set the bitrate to 384 kbps (adjust as needed)
             "-ar",
-            "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
+            "48000", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-q:a",
             "0", // Set the audio quality (adjust as needed, 0 is the best)
             "-y", // Overwrite output file if it exists
@@ -427,7 +427,7 @@ if (cluster.isPrimary) {
             "-b:a",
             "320k", // Set the bitrate to 384 kbps (adjust as needed)
             "-ar",
-            "44100", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
+            "48000", // Set the audio sampling rate to 44.1 kHz (adjust as needed)
             "-q:a",
             "0", // Set the audio quality (adjust as needed, 0 is the best)
             "-y", // Overwrite output file if it exists
