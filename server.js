@@ -69,7 +69,7 @@ if (cluster.isPrimary) {
               ffmpegProcess.stderr.toString()
             );
           }
-
+          fs.unlinkSync(`music/${Link}.mp3`);
           const audio = fs.createReadStream(`music/${Link}converted.mp3`);
           const data = fs.statSync(`music/${Link}converted.mp3`);
           res.setHeader("content-type", "audio/mpeg");
