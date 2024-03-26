@@ -350,8 +350,6 @@ if (cluster.isPrimary) {
           const ffmpegProcess = cp.spawnSync(ffmpeg, [
             "-i",
             inputFilePath, // Input audio file
-            "-i",
-            inputFilePath, // Input audio file
             "-c:a",
             "aac", // Output audio codec (AAC)
             "-b:a",
