@@ -1,4 +1,4 @@
-const express = require("express");
+  const express = require("express");
 const app = express();
 const port = process.env.PORT || 4000;
 const cors = require("cors");
@@ -50,6 +50,8 @@ if (cluster.isPrimary) {
             inputFilePath, // Input audio file
             "-c:a",
             "libmp3lame", // Output audio codec (MP3)
+              "-preset",
+          "ultrafast",
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
@@ -117,6 +119,8 @@ if (cluster.isPrimary) {
             inputFilePath, // Input audio file
             "-c:a",
             "libmp3lame", // Output audio codec (MP3)
+              "-preset",
+          "ultrafast",
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
