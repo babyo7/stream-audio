@@ -7,8 +7,6 @@ const fs = require("fs");
 const cluster = require("node:cluster");
 const os = require("os");
 const totalCpu = os.cpus().length;
-const cp = require("child_process");
-const ffmpeg = require("ffmpeg-static");
 
 if (cluster.isPrimary) {
   for (let i = 0; i < totalCpu; i++) {
@@ -23,9 +21,9 @@ if (cluster.isPrimary) {
 
     if (Link) {
       try {
-        if (fs.existsSync(`music/${Link}converted.mp3`)) {
-          const audio = fs.createReadStream(`music/${Link}converted.mp3`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+        if (fs.existsSync(`music/${Link}.mp3`)) {
+          const audio = fs.createReadStream(`music/${Link}.mp3`);
+          const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("Accept-Ranges", "bytes");
           res.setHeader("content-length", data.size);
@@ -35,39 +33,16 @@ if (cluster.isPrimary) {
         }
 
         const Download = StreamAudio(Link, {
-          filter: "audioonly",
-          quality: "highestaudio",
+          filter: "videoandaudio",
+          quality: "highestvideo",
         }).pipe(fs.createWriteStream(`music/${Link}.mp3`));
 
         Download.on("error", () => console.error("error"));
         Download.on("finish", () => {
           console.log(Link);
 
-          const inputFilePath = `music/${Link}.mp3`;
-
-          const outputFilePath = `music/${Link}converted.mp3`;
-
-          const ffmpegProcess = cp.spawnSync(ffmpeg, [
-            "-i",
-            inputFilePath, // Input audio file
-            "-c:a",
-            "libmp3lame", // Output audio codec (MP3)
-            "-y", // Overwrite output file if it exists
-            outputFilePath, // Output file
-          ]);
-
-          // Check if the conversion was successful
-          if (ffmpegProcess.status === 0) {
-            console.log("Conversion successful.");
-          } else {
-            console.error(
-              "Error converting file:",
-              ffmpegProcess.stderr.toString()
-            );
-          }
-          fs.unlinkSync(`music/${Link}.mp3`);
-          const audio = fs.createReadStream(`music/${Link}converted.mp3`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+          const audio = fs.createReadStream(`music/${Link}.mp3`);
+          const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("Accept-Ranges", "bytes");
           res.setHeader("content-length", data.size);
@@ -89,9 +64,9 @@ if (cluster.isPrimary) {
 
     if (Link) {
       try {
-        if (fs.existsSync(`music/${Link}converted.mp3`)) {
-          const audio = fs.createReadStream(`music/${Link}converted.mp3`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+        if (fs.existsSync(`music/${Link}.mp3`)) {
+          const audio = fs.createReadStream(`music/${Link}.mp3`);
+          const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("Accept-Ranges", "bytes");
           res.setHeader("content-length", data.size);
@@ -105,39 +80,16 @@ if (cluster.isPrimary) {
         }
 
         const Download = StreamAudio(Link, {
-          filter: "audioonly",
-          quality: "highestaudio",
+          filter: "videoandaudio",
+          quality: "highestvideo",
         }).pipe(fs.createWriteStream(`music/${Link}.mp3`));
 
         Download.on("error", () => console.error("error"));
         Download.on("finish", () => {
           console.log(Link);
 
-          const inputFilePath = `music/${Link}.mp3`;
-
-          const outputFilePath = `music/${Link}converted.mp3`;
-
-          const ffmpegProcess = cp.spawnSync(ffmpeg, [
-            "-i",
-            inputFilePath, // Input audio file
-            "-c:a",
-            "libmp3lame", // Output audio codec (MP3)
-            "-y", // Overwrite output file if it exists
-            outputFilePath, // Output file
-          ]);
-
-          // Check if the conversion was successful
-          if (ffmpegProcess.status === 0) {
-            console.log("Conversion successful.");
-          } else {
-            console.error(
-              "Error converting file:",
-              ffmpegProcess.stderr.toString()
-            );
-          }
-          fs.unlinkSync(`music/${Link}.mp3`);
-          const audio = fs.createReadStream(`music/${Link}converted.mp3`);
-          const data = fs.statSync(`music/${Link}converted.mp3`);
+          const audio = fs.createReadStream(`music/${Link}.mp3`);
+          const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader(
             "Content-Disposition",
             `attachment; filename"${File}.mp3"`
