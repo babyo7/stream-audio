@@ -50,10 +50,6 @@ if (cluster.isPrimary) {
             inputFilePath, // Input audio file
             "-c:a",
             "libmp3lame", // Output audio codec (MP3)
-            "-b:a",
-            "320k", // Set the bitrate (adjust as needed)
-            "-ar",
-            "44100", // Set the audio sampling rate (adjust as needed)
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
@@ -121,10 +117,6 @@ if (cluster.isPrimary) {
             inputFilePath, // Input audio file
             "-c:a",
             "libmp3lame", // Output audio codec (MP3)
-            "-b:a",
-            "320k", // Set the bitrate (adjust as needed)
-            "-ar",
-            "44100", // Set the audio sampling rate (adjust as needed)
             "-y", // Overwrite output file if it exists
             outputFilePath, // Output file
           ]);
