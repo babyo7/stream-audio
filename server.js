@@ -71,7 +71,7 @@ if (cluster.isPrimary) {
 
           res.setHeader(
             "Content-Disposition",
-            `attachment; filename"${File}.mp3"`
+            `attachment; filename="${File}.mp3"`
           );
           audio.pipe(res);
           return;
@@ -90,7 +90,7 @@ if (cluster.isPrimary) {
           const data = fs.statSync(`music/${Link}.mp3`);
           res.setHeader(
             "Content-Disposition",
-            `attachment; filename"${File}.mp3"`
+            `attachment; filename="${File}.mp3"`
           );
           res.setHeader("content-type", "audio/mpeg");
           res.setHeader("Accept-Ranges", "bytes");
